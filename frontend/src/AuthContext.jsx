@@ -10,10 +10,20 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const stored = localStorage.getItem("vyron_user");
     if (stored) {
-      setUser(JSON.parse(stored));
+      try {
+        setUser(JSON.parse(stored));
+      } catch (e) {
+        localStorage.removeItem("vyron_user");
+      }
     }
     setLoading(false);
   }, []);
+
+  const persistSession = (data) => {
+    localStorage.setItem("vyron_token", data.token);
+    localStorage.setItem("vyron_user", JSON.stringify(data));
+    setUser(data);
+  };
 
   const login = async (email, password) => {
     const { data } = await api.post("/auth/login", { email, password });
@@ -30,13 +40,6 @@ export const AuthProvider = ({ children }) => {
     });
     persistSession(data);
     return data;
-  };
-
-  const persistSession = (data) => {
-    localStorage.setItem("vyron_token", data.token);
-    const { token, ...userData } = data;
-    localStorage.setItem("vyron_user", JSON.stringify(userData));
-    setUser(userData);
   };
 
   const logout = () => {
