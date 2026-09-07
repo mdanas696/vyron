@@ -1,9 +1,9 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "./Login.jsx";
-import Register from "./Register.jsx";
-import Dashboard from "./Dashboard.jsx";
-import ProtectedRoute from "./ProtectedRoute.jsx";
+import Login from "./Login";
+import Register from "./Register";
+import Dashboard from "./Dashboard";
+import ProtectedRoute from "./ProtectedRoute";
 
 export default function App() {
   return (
