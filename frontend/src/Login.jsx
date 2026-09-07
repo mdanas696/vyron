@@ -1,74 +1,58 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext.jsx";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 import "./Auth.css";
 
-const Login = () => {
-  const { login } = useAuth();
-  const navigate = useNavigate();
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setSubmitting(true);
     try {
       await login(email, password);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Couldn't log you in. Check your details and try again.");
-    } finally {
-      setSubmitting(false);
+      setError(err.response?.data?.message || "Failed to log in");
     }
   };
 
   return (
-    <div className="auth-screen">
+    <div className="auth-container">
       <div className="auth-card">
-        <h1 className="auth-wordmark">
-          VY<span>RON</span>
-        </h1>
-        <p className="auth-subtitle">Welcome back. Let's get back to it.</p>
-
+        <h2>Sign In to VYRON</h2>
         {error && <div className="auth-error">{error}</div>}
-
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <div>
-            <label className="field-label" htmlFor="email">Email</label>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Email</label>
             <input
-              id="email"
-              className="field-input"
               type="email"
+              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
           </div>
-          <div>
-            <label className="field-label" htmlFor="password">Password</label>
+          <div className="form-group">
+            <label>Password</label>
             <input
-              id="password"
-              className="field-input"
               type="password"
+              required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             />
           </div>
-          <button className="auth-submit" type="submit" disabled={submitting}>
-            {submitting ? "Logging in..." : "Log in"}
+          <button type="submit" className="auth-button">
+            Sign In
           </button>
         </form>
-
-        <p className="auth-switch">
-          New here? <Link to="/register">Create an account</Link>
+        <p className="auth-footer">
+          Don't have an account? <Link to="/register">Create one</Link>
         </p>
       </div>
     </div>
   );
-};
-
-export default Login;
+}
