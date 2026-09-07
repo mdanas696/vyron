@@ -1,107 +1,79 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext.jsx";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 import "./Auth.css";
 
-const Register = () => {
-  const { register } = useAuth();
-  const navigate = useNavigate();
+export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [accountType, setAccountType] = useState("student");
   const [error, setError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
+  const { register } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setSubmitting(true);
     try {
       await register(name, email, password, accountType);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Couldn't create your account. Try again.");
-    } finally {
-      setSubmitting(false);
+      setError(err.response?.data?.message || "Registration failed");
     }
   };
 
   return (
-    <div className="auth-screen">
+    <div className="auth-container">
       <div className="auth-card">
-        <h1 className="auth-wordmark">
-          VY<span>RON</span>
-        </h1>
-        <p className="auth-subtitle">Set up your account to start tracking.</p>
-
+        <h2>Join VYRON</h2>
         {error && <div className="auth-error">{error}</div>}
-
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <div>
-            <label className="field-label" htmlFor="name">Name</label>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Full Name</label>
             <input
-              id="name"
-              className="field-input"
               type="text"
+              required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
             />
           </div>
-          <div>
-            <label className="field-label" htmlFor="email">Email</label>
+          <div className="form-group">
+            <label>Email</label>
             <input
-              id="email"
-              className="field-input"
               type="email"
+              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
           </div>
-          <div>
-            <label className="field-label" htmlFor="password">Password</label>
+          <div className="form-group">
+            <label>Password</label>
             <input
-              id="password"
-              className="field-input"
               type="password"
+              required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              minLength={6}
-              required
             />
           </div>
-          <div>
-            <label className="field-label">I'm a</label>
-            <div className="account-type-row">
-              <button
-                type="button"
-                className={`account-type-option ${accountType === "student" ? "active" : ""}`}
-                onClick={() => setAccountType("student")}
-              >
-                Student
-              </button>
-              <button
-                type="button"
-                className={`account-type-option ${accountType === "working" ? "active" : ""}`}
-                onClick={() => setAccountType("working")}
-              >
-                Working professional
-              </button>
-            </div>
+          <div className="form-group">
+            <label>Account Type</label>
+            <select
+              value={accountType}
+              onChange={(e) => setAccountType(e.target.value)}
+            >
+              <option value="student">Student</option>
+              <option value="professional">Professional</option>
+            </select>
           </div>
-          <button className="auth-submit" type="submit" disabled={submitting}>
-            {submitting ? "Creating account..." : "Create account"}
+          <button type="submit" className="auth-button">
+            Create Account
           </button>
         </form>
-
-        <p className="auth-switch">
-          Already have an account? <Link to="/login">Log in</Link>
+        <p className="auth-footer">
+          Already registered? <Link to="/login">Sign In</Link>
         </p>
       </div>
     </div>
   );
-};
-
-export default Register;
+}
