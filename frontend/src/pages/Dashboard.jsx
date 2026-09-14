@@ -1,54 +1,30 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import Sidebar from "../components/Sidebar.jsx";
 import "./Dashboard.css";
 
 const Dashboard = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  const { user } = useAuth();
 
   return (
     <div className="app-shell">
-      <aside className="side-nav">
-        <div className="wordmark">
-          VY<span>RON</span>
-        </div>
-
-        <div className="nav-item active">Overview</div>
-        <div className="nav-item">Calendar</div>
-        <div className="nav-item">Tracker</div>
-        <div className="nav-item">Insights</div>
-
-        <div className="nav-footer">
-          <div className="nav-user">
-            <strong>{user?.name}</strong>
-            {user?.email}
-          </div>
-          <button className="logout-btn" onClick={handleLogout}>
-            Log out
-          </button>
-        </div>
-      </aside>
+      <Sidebar />
 
       <main className="main-content">
         <h2>Welcome, {user?.name?.split(" ")[0]}.</h2>
         <p className="greeting-sub">
-          Sprint 1 is live: auth is working end to end. Calendar and tracker land in the next sprints.
+          Sprint 2 is live: your calendar is real now. Tracker and insights land next.
         </p>
 
         <div className="placeholder-grid">
-          <div className="placeholder-card">
+          <Link to="/calendar" className="placeholder-card active-card">
             <div className="placeholder-card-header">
               <h3>Calendar</h3>
-              <span className="placeholder-lock">🔒</span>
+              <span className="placeholder-lock">→</span>
             </div>
             <p>Events, appointments, priority tasks, and reminders — day view.</p>
-            <span className="placeholder-tag">Not built yet</span>
-          </div>
+            <span className="placeholder-tag active-tag">Open calendar</span>
+          </Link>
           <div className="placeholder-card">
             <div className="placeholder-card-header">
               <h3>Tracker</h3>
