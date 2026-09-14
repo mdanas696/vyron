@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
+const eventRoutes = require("./routes/eventRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 connectDB();
@@ -21,9 +22,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/events", eventRoutes);
 
-// Sprint 2+ will mount here:
-// app.use("/api/events", eventRoutes);
+// Sprint 3+ will mount here:
 // app.use("/api/tracker", trackerRoutes);
 
 app.use(notFound);
