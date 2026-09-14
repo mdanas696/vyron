@@ -1,13 +1,18 @@
 const Event = require("../models/Event");
 
-// GET /api/events?date=YYYY-MM-DD
+// GET /api/events?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
 const getEvents = async (req, res) => {
   try {
-    const { date } = req.query;
+    const { date, startDate, endDate } = req.query;
     const filter = { user: req.user._id };
-    if (date) filter.date = date;
 
-    const events = await Event.find(filter).sort({ time: 1, createdAt: 1 });
+    if (startDate && endDate) {
+      filter.date = { $gte: startDate, $lte: endDate };
+    } else if (date) {
+      filter.date = date;
+    }
+
+    const events = await Event.find(filter).sort({ date: 1, time: 1, createdAt: 1 });
     res.json(events);
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch events.", error: err.message });
