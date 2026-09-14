@@ -42,19 +42,28 @@ const Dashboard = () => {
 
         <div className="placeholder-grid">
           <div className="placeholder-card">
-            <h3>Calendar</h3>
+            <div className="placeholder-card-header">
+              <h3>Calendar</h3>
+              <span className="placeholder-lock">🔒</span>
+            </div>
             <p>Events, appointments, priority tasks, and reminders — day view.</p>
-            <span className="placeholder-tag">Sprint 2</span>
+            <span className="placeholder-tag">Not built yet</span>
           </div>
           <div className="placeholder-card">
-            <h3>Tracker</h3>
+            <div className="placeholder-card-header">
+              <h3>Tracker</h3>
+              <span className="placeholder-lock">🔒</span>
+            </div>
             <p>Custom habit rows, month grid, multi-state marking, monthly analysis.</p>
-            <span className="placeholder-tag">Sprint 3</span>
+            <span className="placeholder-tag">Not built yet</span>
           </div>
           <div className="placeholder-card">
-            <h3>Insights</h3>
+            <div className="placeholder-card-header">
+              <h3>Insights</h3>
+              <span className="placeholder-lock">🔒</span>
+            </div>
             <p>Consistency stats, streaks, and what you've been getting done.</p>
-            <span className="placeholder-tag">Sprint 4</span>
+            <span className="placeholder-tag">Not built yet</span>
           </div>
         </div>
       </main>
